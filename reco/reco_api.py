@@ -40,9 +40,9 @@ def predict():
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
         prediction = queryReco(myInputs)
-        predictionout = int(prediction[0])
+        #predictionout = str(prediction[0])
         # Die Vorhersage als JSON-Antwort senden
-        return jsonify({"prediction": predictionout})
+        return jsonify({"prediction": prediction})
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

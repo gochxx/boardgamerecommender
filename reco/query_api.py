@@ -1,7 +1,8 @@
 import requests
 import json
 
-url = "http://192.168.178.50:5000/predict"  # Stellen Sie sicher, dass die Adresse und der Port korrekt sind
+
+url = "http://192.168.178.26:5000/predict"  # Stellen Sie sicher, dass die Adresse und der Port korrekt sind
 data = {
     "feature1": 5.1,
     "feature2": 3.5,
