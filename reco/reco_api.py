@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib
 from flask_cors import CORS
+from query_recommender import queryReco
 
 
 app = Flask(__name__)
@@ -13,14 +14,14 @@ def home():
     return "Hello, Flask!"
 
 
+
 # Dummy-Modell (Sie sollten Ihr eigenes Modell hier laden)
-'''
-model = joblib.load("knn_iris.joblib")
 
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
         # Daten aus der Anfrage als JSON erhalten
+        '''
         data = request.get_json()
         
         # Überprüfen, ob die erforderlichen Merkmale im JSON vorhanden sind
@@ -32,16 +33,20 @@ def predict():
         feature2 = float(data["feature2"])
         feature3 = float(data["feature3"])
         feature4 = float(data["feature4"])
-        
+        '''
+
         # Vorhersage mit dem Modell durchführen
-        prediction = model.predict([[feature1, feature2, feature3, feature4]])
+        myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
+              "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
+              "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
+        prediction = queryReco(myInputs)
         predictionout = int(prediction[0])
         # Die Vorhersage als JSON-Antwort senden
         return jsonify({"prediction": predictionout})
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-'''
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
