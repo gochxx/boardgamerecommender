@@ -9,8 +9,12 @@ data = {
     "feature3": 8.4,
     "feature4": 5.2
 }
+data = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
+              "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
+              "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
 
 headers = {'Content-Type': 'application/json'}
+
 
 response = requests.post(url, json=data, headers=headers)
 
@@ -19,3 +23,4 @@ if response.status_code == 200:
     print("Vorhersage:", result["prediction"])
 else:
     print("Fehler:", response.status_code, response.text)
+
