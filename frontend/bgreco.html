@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>Boardgame Recommender</title>
+</head>
+<body>
+    <h1>Boardgame Recommender</h1>
+
+    <form id="prediction-form" onsubmit="predict(event)">
+        <label for="yearpublished">Year Published:</label>
+        <input type="range" id="yearpublished" name="yearpublished" min="2000" max="2024" step="1"><br><br>
+
+        <label for="age">Age:</label>
+        <input type="range" id="age" name="age" min="0" max="20" step="1"><br><br>
+
+        <label for="playingtime">Playing Time (in Minutes):</label>
+        <input type="range" id="playingtime" name="playingtime" min="5" max="300" step="5"><br><br>
+
+        <label for="categories">Categories:</label>
+        <select id="categories" name="categories[]" multiple>
+            <option value="cat_CardGame">Kartenspiele</option>
+            <option value="cat_ScienceFiction">Science-Fiction</option>
+            <option value="cat_Dice">Würfelspiele</option>
+            <option value="cat_Animals">Tiere</option>
+        </select>
+        <input type="hidden" id="jsonCategories" name="jsonCategories">
+
+        <label for="mechanics">Mechanics:</label>
+        <select id="mechanics" name="mechanics[]" multiple>
+            <option value="mec_ModularBoard">Modular Board</option>
+            <option value="mec_DiceRolling">Dice Rolling</option>
+        </select>
+        <input type="hidden" id="jsonMechanics" name="jsonMechanics">
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="prediction-result">
+        <p>Prediction: <span id="prediction-value"></span></p>
+    </div>
+
+    <script>
+        function predict(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Collect input values
+            var yearpublished = parseFloat(document.getElementById("yearpublished").value);
+            var age = parseFloat(document.getElementById("age").value);
+            var playingtime = parseFloat(document.getElementById("playingtime").value);
+
+            var selectedCategories = Array.from(document.getElementById('categories').selectedOptions).map(option => option.value);
+            var jsonCategories = JSON.stringify({ "cat": selectedCategories });
+            document.getElementById('jsonCategories').value = jsonCategories;
+
+            var selectedMechanics = Array.from(document.getElementById('mechanics').selectedOptions).map(option => option.value);
+            var jsonMechanics = JSON.stringify({ "mec": selectedMechanics });
+            document.getElementById('jsonMechanics').value = jsonMechanics;
+
+            // Create JSON object with input values
+            var data = {
+                "yearpublished": yearpublished,
+                "age": age,
+                "playingtime": playingtime,
+                "cat": selectedCategories,
+                "mec": selectedMechanics
+            };
+
+            // Send data to your Flask API
+            fetch("http://192.168.178.26:5000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display prediction in the frontend
+                document.getElementById("prediction-value").textContent = data.prediction;
+            })
+            .catch(error => {
+                console.error("Error fetching prediction: " + error);
+            });
+        }
+    </script>
+</body>
+</html>
