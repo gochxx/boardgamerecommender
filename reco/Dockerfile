@@ -9,6 +9,7 @@ COPY requirements.txt .
 
 # Kopiere die anderen Dateien
 COPY reco_api.py .
+COPY query_recommender.py .
 
 # Erstelle eine neue Conda-Umgebung und installiere die Abhängigkeiten
 RUN conda create -y --name myenv --file requirements.txt

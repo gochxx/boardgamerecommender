@@ -9,6 +9,8 @@ services:
       - "5000:5000"
     networks:
       - app-network
+    volumes:
+      - ../data:/data
 
   webserver:
     image: nginx:alpine
