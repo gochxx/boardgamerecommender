@@ -12,6 +12,9 @@ VOLUME /app/data
 # Kopiere die anderen Dateien
 COPY reco/reco_api.py reco/
 COPY reco/query_recommender.py reco/
+COPY data /app/data
+
+
 
 # Erstelle eine neue Conda-Umgebung und installiere die Abhängigkeiten
 RUN conda create -y --name myenv --file reco/requirements.txt
@@ -23,5 +26,6 @@ SHELL ["/bin/bash", "--login", "-c"]
 # Exponiere den Port, auf dem die Flask-Anwendung läuft
 EXPOSE 5000
 
+
 # Starte die Flask-Anwendung beim Ausführen des Containers
-CMD ["python", "reco/reco_api.py"]
+CMD ["/bin/bash", "-c", "source activate myenv && python reco/reco_api.py"]
