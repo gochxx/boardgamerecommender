@@ -2,7 +2,9 @@ import requests
 import json
 
 
-url = "http://192.168.178.26:5000/predict"  # Stellen Sie sicher, dass die Adresse und der Port korrekt sind
+#url = "http://192.168.178.26:5000/predict"  # Stellen Sie sicher, dass die Adresse und der Port korrekt sind
+
+url = "http://3.127.211.244:5000/predict"  # Stellen Sie sicher, dass die Adresse und der Port korrekt sind
 
 data = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 

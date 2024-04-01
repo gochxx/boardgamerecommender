@@ -5,7 +5,9 @@ from query_recommender import queryReco
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5500"}})
+CORS(app) # alle Anfraen erlauben!
+#CORS(app, resources={r"/predict": {"origins": "http://webserver:80"}}) # für ausführen im Container!
+#CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5500"}}) Nur für lokale Ausführung
 
 
 
