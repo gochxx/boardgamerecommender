@@ -9,9 +9,6 @@
 </head>
 <body>
 
-
-
-
     <div align="center" class="container-sm">
     <h1 class="display-1">Boardgame Recommender</h1>
     <form id="prediction-form" onsubmit="predict(event)">
@@ -24,6 +21,8 @@
         <label for="playingtime">Playing Time (in Minutes):</label>
         <input type="range" id="playingtime" name="playingtime" min="5" max="300" step="5" class="form-range"><br><br>
 
+
+
         <label for="categories">Categories:</label>
         <select id="categories" name="categories[]"  class="form-select"  multiple>
             <option value="cat_CardGame">Kartenspiele</option>
@@ -32,6 +31,18 @@
             <option value="cat_Animals">Tiere</option>
         </select><br>
         <input type="hidden" id="jsonCategories" name="jsonCategories">
+
+        <label for="sub">Sub-Categories:</label>
+        <select id="sub" name="sub[]"  class="form-select"  multiple>
+            <option value="sub_AbstractGames">Abstrakte Spiele</option>
+            <option value="sub_CustomizableGames">Anpassbare Spiele</option>
+            <option value="sub_FamilyGames">Familienspiele</option>
+            <option value="sub_PartyGames">Party Spiele</option>
+            <option value="sub_StrategyGames">Strategie Spiele</option>
+            <option value="sub_ThematicGames">Thematische Spiele</option>
+            <option value="sub_Wargames">Kriegsspiele</option>
+        </select><br>
+        <input type="hidden" id="jsonSub" name="jsonSub">
 
         <label for="mechanics">Mechanics:</label>
         <select id="mechanics" name="mechanics[]"  class="form-select" multiple>
@@ -80,13 +91,18 @@
             var jsonMechanics = JSON.stringify({ "mec": selectedMechanics });
             document.getElementById('jsonMechanics').value = jsonMechanics;
 
+            var selectedSub = Array.from(document.getElementById('sub').selectedOptions).map(option => option.value);
+            var jsonSub = JSON.stringify({ "sub": selectedSub });
+            document.getElementById('jsonSub').value = jsonSub;
+
             // Create JSON object with input values
             var data = {
                 "yearpublished": yearpublished,
                 "age": age,
                 "playingtime": playingtime,
                 "cat": selectedCategories,
-                "mec": selectedMechanics
+                "mec": selectedMechanics,
+                "sub": selectedSub
             };
 
             // Send data to your Flask API

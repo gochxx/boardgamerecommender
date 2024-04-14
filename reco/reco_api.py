@@ -27,7 +27,7 @@ def predict():
         data = request.get_json()
         
         # Überprüfen, ob die erforderlichen Merkmale im JSON vorhanden sind
-        if "yearpublished" not in data or "playingtime" not in data or "age" not in data or "cat" not in data or "mec" not in data:
+        if "yearpublished" not in data or "playingtime" not in data or "age" not in data or "cat" not in data or "mec" not in data or "sub" not in data:
             return jsonify({"error": "Fehlende Merkmale"}), 400
         
         # Merkmale aus der JSON-Anfrage extrahieren
@@ -36,6 +36,7 @@ def predict():
         age = int(data["age"])
         cat = data["cat"]
         mec = data["mec"]
+        sub = data["sub"]
         
 
         # Vorhersage mit dem Modell durchführen
@@ -44,7 +45,7 @@ def predict():
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
         '''
-        myInputs = {"yearpublished": yearpublished, "playingtime": playingtime, "age": age, 
+        myInputs = {"yearpublished": yearpublished, "playingtime": playingtime, "age": age, "sub": sub,
               "cat": cat, "mec": mec}
         
         prediction = queryReco(myInputs)

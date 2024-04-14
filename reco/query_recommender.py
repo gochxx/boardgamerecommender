@@ -12,6 +12,8 @@ def queryReco (recoInputs):
     inputdata["yearpublished"] = recoInputs["yearpublished"]
     inputdata["playingtime"] = recoInputs["playingtime"]
     inputdata["age"] = recoInputs["age"]
+    for x in recoInputs["sub"]:
+        inputdata[x]=1
     for x in recoInputs["cat"]:
         inputdata[x]=1
     for x in recoInputs["mec"]:
@@ -25,7 +27,8 @@ def queryReco (recoInputs):
     ncomp = pca_mec.n_components_ 
     mechanic_pca = pd.DataFrame(pca_mec.transform(inputdata[[x for x in inputdata.columns if x[:4]=="mec_"]]), columns=["mecp_" + str(x) for x in range(ncomp)])
 
-    allfeat = ['yearpublished', 'playingtime', 'age'] 
+    allfeat = ['yearpublished', 'playingtime', 'age', 'sub_AbstractGames', 'sub_CustomizableGames', 'sub_FamilyGames', 
+           'sub_PartyGames', 'sub_StrategyGames', 'sub_ThematicGames', 'sub_Wargames'] 
     for x in allfeat:
         scaler = joblib.load(f'data/scaler_{x}.pkl')
         inputdata[x] = scaler.transform(inputdata[x].values.reshape(-1, 1))
@@ -36,13 +39,14 @@ def queryReco (recoInputs):
 
     x_train = joblib.load('data/x_train.pkl')
     recos = pd.DataFrame(euclidean_distances( x_train, y_test))
-    bgdata = pd.read_pickle("data/bg_data20240302.pkl")
+    bgdata = pd.read_pickle("data/bg_data20240412.pkl")
 
     recos = pd.concat([recos, bgdata["name"]], axis=1)
     return (recos.sort_values(0).iloc[:10,1].to_list())
 
 
 myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
+            "sub": ["sub_StrategyGames"], 
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
 
