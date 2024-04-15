@@ -56,6 +56,34 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/getdata", methods=["POST"])
+def getdata():
+    try:
+        json = request.get_json()
+        data = json["data"]
+        len = json["len"]
+        print(data)
+        file_path = ""
+        # Der Dateipfad, aus dem die Daten gelesen werden sollen
+        if (data=="topcat"):
+            file_path = 'data/topcat.txt'
+        elif(data=="topmec"):
+            file_path = 'data/topmec.txt'
+        # Eine leere Liste erstellen, um die Daten zu speichern
+        data_list = []
+
+        # Die Textdatei öffnen und im Lesemodus ('r') öffnen
+        with open(file_path, 'r') as file:
+            # Jede Zeile der Datei lesen und der Liste hinzufügen
+            for line in file:
+                # Die Zeile nach Kommas trennen und die Werte zur Liste hinzufügen
+                values = line.strip().split(',')
+                data_list.append(values)
+
+        return jsonify({"data": data_list[0][:len]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
