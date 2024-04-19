@@ -147,6 +147,55 @@
         addRangeInputListener('playingtime', 'playingtime_value');
 
 
+        
+        // Funktion zum Abrufen der Daten von der API und Aktualisieren des Select-Felds
+        function fetchDataAndPopulateSelect() {
+            // API-Endpunkt und Parameter
+            //const apiUrl = '/backend/getdata';
+            const apiUrl = "http://192.168.178.26:5000/getdata"; // ACHTUNG: Das ist nur Lokal für Debug!!!
+            const dataParam = 'topcat';
+
+            // API-Aufruf
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dataParam)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Select-Feld
+                    const selectList = document.getElementById('categories');
+
+
+                    console.log(data);
+                    //data = JSON.parse(data)
+
+/*
+                    // Vorhandene Optionen löschen
+                    selectList.innerHTML = '';
+                    
+                    // Daten als Optionen hinzufügen
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.text = item;
+                        selectList.appendChild(option);
+                    });
+                    */
+                })
+                .catch(error => {
+                    console.error('Fehler beim Abrufen der Daten:', error);
+                });
+        }
+
+        // Seite geladen, Daten abrufen und Select-Feld aktualisieren
+        document.addEventListener('DOMContentLoaded', fetchDataAndPopulateSelect);
+    
+
+
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
