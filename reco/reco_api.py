@@ -28,16 +28,18 @@ def predict():
         data = request.get_json()
         
         # Überprüfen, ob die erforderlichen Merkmale im JSON vorhanden sind
-        if "yearpublished" not in data or "playingtime" not in data or "age" not in data or "cat" not in data or "mec" not in data or "sub" not in data:
+        if "yearpublished" not in data or "playingtime" not in data or "age" not in data or "cat" not in data or "mec" not in data or "minplayers" not in data or "maxplayers" not in data:
             return jsonify({"error": "Fehlende Merkmale"}), 400
         
         # Merkmale aus der JSON-Anfrage extrahieren
         yearpublished = int(data["yearpublished"])
         playingtime = int(data["playingtime"])
+        maxplayers = int(data["maxplayers"])
+        minplayers = int(data["minplayers"])
         age = int(data["age"])
         cat = data["cat"]
         mec = data["mec"]
-        sub = data["sub"]
+        
         
 
         # Vorhersage mit dem Modell durchführen
@@ -46,7 +48,7 @@ def predict():
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
         '''
-        myInputs = {"yearpublished": yearpublished, "playingtime": playingtime, "age": age, "sub": sub,
+        myInputs = {"yearpublished": yearpublished, "playingtime": playingtime, "age": age, "minplayers": minplayers, "maxplayers": maxplayers,
               "cat": cat, "mec": mec}
         
         prediction = queryReco(myInputs)
@@ -79,6 +81,8 @@ def getdata():
             for line in file:
                 # Die Zeile nach Kommas trennen und die Werte zur Liste hinzufügen
                 data_list= line.strip().split(',')
+
+        data_list = [x.strip() for x in data_list]
 
         # Führende "cat" entfernen
         return jsonify({"data": data_list[:len]})

@@ -12,8 +12,6 @@ def queryReco (recoInputs):
     inputdata["yearpublished"] = recoInputs["yearpublished"]
     inputdata["playingtime"] = recoInputs["playingtime"]
     inputdata["age"] = recoInputs["age"]
-    for x in recoInputs["sub"]:
-        inputdata[x]=1
     for x in recoInputs["cat"]:
         inputdata[x]=1
     for x in recoInputs["mec"]:
@@ -27,8 +25,7 @@ def queryReco (recoInputs):
     ncomp = pca_mec.n_components_ 
     mechanic_pca = pd.DataFrame(pca_mec.transform(inputdata[[x for x in inputdata.columns if x[:4]=="mec_"]]), columns=["mecp_" + str(x) for x in range(ncomp)])
 
-    allfeat = ['yearpublished', 'playingtime', 'age', 'sub_AbstractGames', 'sub_CustomizableGames', 'sub_FamilyGames', 
-           'sub_PartyGames', 'sub_StrategyGames', 'sub_ThematicGames', 'sub_Wargames'] 
+    allfeat = [x for x in inputdata.columns if x[:4]!="cat_" and x[:4]!="mec_"]
     for x in allfeat:
         scaler = joblib.load(f'data/scaler_{x}.pkl')
         inputdata[x] = scaler.transform(inputdata[x].values.reshape(-1, 1))
@@ -45,8 +42,7 @@ def queryReco (recoInputs):
     return (recos.sort_values(0).iloc[:10,1].to_list())
 
 
-myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
-            "sub": ["sub_StrategyGames"], 
+myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, "minplayers":10, "maxplayers":15,
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
 

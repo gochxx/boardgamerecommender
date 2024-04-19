@@ -11,7 +11,15 @@ url2 = "http://192.168.178.26:5000/getdata"
 data = {"yearpublished": 2020, "playingtime": 60, "age": 10, 
               "cat": ["cat_CardGame", "cat_ScienceFiction", "cat_Dice", "cat_Animals"], 
               "mec": ["mec_DiceRolling", "mec_ModularBoard"],
-              "sub": ["sub_StrategyGames"]}
+              "minplayers": 1, 
+              "maxplayers": 4}
+
+data = {"yearpublished": 2018, "playingtime": 115, "age": 17, 
+              "cat": ["cat_Economic", " cat_CardGame", " cat_Fantasy"], 
+              "mec": ["mec_VariablePlayerPowers" ],
+              "minplayers": 1, 
+              "maxplayers": 8}
+
 
 headers = {'Content-Type': 'application/json'}
 

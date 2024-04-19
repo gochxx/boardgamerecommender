@@ -28,6 +28,14 @@
         
         <br><br>
 
+        <div class="input-range-container">
+            <div class="input-range-tracker"></div>
+            <div class="input-range-tracker-between"></div>
+            <label for="minplayers">Minimum Players:</label> <span id="minplayers_value">1</span>
+            <input type="range" min="1" max="10 " value="1" name="minplayers" id="minplayers"  step="1" class="form-range">
+            <label for="maxplayers">Maximum Players:</label> <span id="maxplayers_value">5</span>
+            <input type="range" min="1" max="10" value="5" name="maxplayers" id="maxplayers"  step="1" class="form-range">
+        </div>
 
 
         <label for="categories">Categories:</label>
@@ -39,17 +47,7 @@
         </select><br>
         <input type="hidden" id="jsonCategories" name="jsonCategories">
 
-        <label for="sub">Sub-Categories:</label>
-        <select id="sub" name="sub[]"  class="form-select"  multiple>
-            <option value="sub_AbstractGames">Abstrakte Spiele</option>
-            <option value="sub_CustomizableGames">Anpassbare Spiele</option>
-            <option value="sub_FamilyGames">Familienspiele</option>
-            <option value="sub_PartyGames">Party Spiele</option>
-            <option value="sub_StrategyGames">Strategie Spiele</option>
-            <option value="sub_ThematicGames">Thematische Spiele</option>
-            <option value="sub_Wargames">Kriegsspiele</option>
-        </select><br>
-        <input type="hidden" id="jsonSub" name="jsonSub">
+   
 
         <label for="mechanics">Mechanics:</label>
         <select id="mechanics" name="mechanics[]"  class="form-select" multiple>
@@ -84,11 +82,16 @@
     <script>
         function predict(event) {
             event.preventDefault(); // Prevent form submission
+
+            
             
             // Collect input values
             var yearpublished = parseFloat(document.getElementById("yearpublished").value);
             var age = parseFloat(document.getElementById("age").value);
             var playingtime = parseFloat(document.getElementById("playingtime").value);
+            var minplayers = parseFloat(document.getElementById("minplayers").value);
+            var maxplayers = parseFloat(document.getElementById("maxplayers").value);
+
 
             var selectedCategories = Array.from(document.getElementById('categories').selectedOptions).map(option => option.value);
             var jsonCategories = JSON.stringify({ "cat": selectedCategories });
@@ -98,9 +101,7 @@
             var jsonMechanics = JSON.stringify({ "mec": selectedMechanics });
             document.getElementById('jsonMechanics').value = jsonMechanics;
 
-            var selectedSub = Array.from(document.getElementById('sub').selectedOptions).map(option => option.value);
-            var jsonSub = JSON.stringify({ "sub": selectedSub });
-            document.getElementById('jsonSub').value = jsonSub;
+            
 
             // Create JSON object with input values
             var data = {
@@ -109,8 +110,11 @@
                 "playingtime": playingtime,
                 "cat": selectedCategories,
                 "mec": selectedMechanics,
-                "sub": selectedSub
+                "minplayers": minplayers,
+                "maxplayers": maxplayers
             };
+
+
 
             // Send data to your Flask API
             fetch("http://192.168.178.26:5000/predict", {
@@ -145,6 +149,8 @@
         addRangeInputListener('yearpublished', 'yearpublished_value');
         addRangeInputListener('age', 'age_value');
         addRangeInputListener('playingtime', 'playingtime_value');
+        addRangeInputListener('minplayers', 'minplayers_value');
+        addRangeInputListener('maxplayers', 'maxplayers_value');
 
 
         
@@ -167,18 +173,15 @@
                 .then(getdata => {
                     // Select-Feld
                     const selectList = document.getElementById(selectfield);
-                    let counter = 0;
+                    
                     
                     // Vorhandene Optionen löschen
                     selectList.innerHTML = '';
                     
                     // Daten als Optionen hinzufügen
                     getdata.data.forEach(item => {
-                        let subvalue=4;
-                        if (counter>0){subvalue=5;}
-                        counter = counter +1;
                         const option = document.createElement('option');
-                        option.text = item.substring(subvalue);
+                        option.text = item.substring(4);
                         option.value = item;
                         selectList.appendChild(option);
                     });
