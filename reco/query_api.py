@@ -36,7 +36,7 @@ response = requests.post(url2, json=data2, headers=headers)
 
 if response.status_code == 200:
     result = response.json()
-    print("Vorhersage:", result["data"])
+    print("getdata:", result["data"])
 else:
     print("Fehler:", response.status_code, response.text)
 

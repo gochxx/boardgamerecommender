@@ -71,17 +71,17 @@ def getdata():
         elif(data=="topmec"):
             file_path = 'data/topmec.txt'
         # Eine leere Liste erstellen, um die Daten zu speichern
-        data_list = []
+        
 
         # Die Textdatei öffnen und im Lesemodus ('r') öffnen
         with open(file_path, 'r') as file:
             # Jede Zeile der Datei lesen und der Liste hinzufügen
             for line in file:
                 # Die Zeile nach Kommas trennen und die Werte zur Liste hinzufügen
-                values = line.strip().split(',')
-                data_list.append(values)
+                data_list= line.strip().split(',')
 
-        return jsonify({"data": data_list[0][:len]})
+        # Führende "cat" entfernen
+        return jsonify({"data": data_list[:len]})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

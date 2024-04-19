@@ -113,9 +113,9 @@
             };
 
             // Send data to your Flask API
-            // fetch("http://192.168.178.26:5000/predict", {
+            fetch("http://192.168.178.26:5000/predict", {
             // im Container kann hier der relative Pfad über den Proxy Server verwendet werden (statt localhost 192.168.178.26 im lokalen Setup)
-            fetch("/backend/predict", {
+            //fetch("/backend/predict", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -149,41 +149,40 @@
 
         
         // Funktion zum Abrufen der Daten von der API und Aktualisieren des Select-Felds
-        function fetchDataAndPopulateSelect() {
+        function fetchDataAndPopulateSelect(kind, selectfield) {
             // API-Endpunkt und Parameter
             //const apiUrl = '/backend/getdata';
             const apiUrl = "http://192.168.178.26:5000/getdata"; // ACHTUNG: Das ist nur Lokal für Debug!!!
-            const dataParam = 'topcat';
+            const dataParam = { data: kind, len: 20}; 
 
             // API-Aufruf
-
             fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(dataParam)
-            })
+                })
                 .then(response => response.json())
-                .then(data => {
+                .then(getdata => {
                     // Select-Feld
-                    const selectList = document.getElementById('categories');
-
-
-                    console.log(data);
-                    //data = JSON.parse(data)
-
-/*
+                    const selectList = document.getElementById(selectfield);
+                    let counter = 0;
+                    
                     // Vorhandene Optionen löschen
                     selectList.innerHTML = '';
                     
                     // Daten als Optionen hinzufügen
-                    data.forEach(item => {
+                    getdata.data.forEach(item => {
+                        let subvalue=4;
+                        if (counter>0){subvalue=5;}
+                        counter = counter +1;
                         const option = document.createElement('option');
-                        option.text = item;
+                        option.text = item.substring(subvalue);
+                        option.value = item;
                         selectList.appendChild(option);
                     });
-                    */
+
                 })
                 .catch(error => {
                     console.error('Fehler beim Abrufen der Daten:', error);
@@ -191,8 +190,9 @@
         }
 
         // Seite geladen, Daten abrufen und Select-Feld aktualisieren
-        document.addEventListener('DOMContentLoaded', fetchDataAndPopulateSelect);
-    
+        document.addEventListener('DOMContentLoaded', fetchDataAndPopulateSelect("topcat", "categories"));
+        document.addEventListener('DOMContentLoaded', fetchDataAndPopulateSelect("topmec", "mechanics"));
+        
 
 
 
