@@ -117,9 +117,9 @@
 
 
             // Send data to your Flask API
-            fetch("http://192.168.178.26:5000/predict", {
+            //fetch("http://192.168.178.26:5000/predict", {
             // im Container kann hier der relative Pfad über den Proxy Server verwendet werden (statt localhost 192.168.178.26 im lokalen Setup)
-            //fetch("/backend/predict", {
+            fetch("/backend/predict", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -168,8 +168,8 @@
         // Funktion zum Abrufen der Daten von der API und Aktualisieren des Select-Felds
         function fetchDataAndPopulateSelect(kind, selectfield) {
             // API-Endpunkt und Parameter
-            //const apiUrl = '/backend/getdata';
-            const apiUrl = "http://192.168.178.26:5000/getdata"; // ACHTUNG: Das ist nur Lokal für Debug!!!
+            const apiUrl = '/backend/getdata';
+            //const apiUrl = "http://192.168.178.26:5000/getdata"; // ACHTUNG: Das ist nur Lokal für Debug!!!
             const dataParam = { data: kind, len: 20}; 
 
             // API-Aufruf
