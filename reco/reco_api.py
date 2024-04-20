@@ -54,7 +54,8 @@ def predict():
         prediction = queryReco(myInputs)
         #predictionout = str(prediction[0])
         # Die Vorhersage als JSON-Antwort senden
-        return jsonify({"prediction": prediction})
+        #return jsonify({"prediction": prediction})
+        return prediction
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

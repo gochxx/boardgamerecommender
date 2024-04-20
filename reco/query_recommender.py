@@ -38,8 +38,11 @@ def queryReco (recoInputs):
     recos = pd.DataFrame(euclidean_distances( x_train, y_test))
     bgdata = pd.read_pickle("data/bg_data20240412.pkl")
 
-    recos = pd.concat([recos, bgdata["name"]], axis=1)
-    return (recos.sort_values(0).iloc[:10,1].to_list())
+    recos = pd.concat([recos, bgdata[["name", "id"]]], axis=1)
+    recos.sort_values(0, inplace=True)
+
+    #return (recos.sort_values(0).iloc[:10,1].to_list())
+    return (recos.iloc[:10,[1,3]].to_json(orient="records"))
 
 
 myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, "minplayers":10, "maxplayers":15,
@@ -47,3 +50,5 @@ myInputs = {"yearpublished": 2020, "playingtime": 60, "age": 10, "minplayers":10
               "mec": ["mec_DiceRolling", "mec_ModularBoard"]}
 
 print(queryReco (myInputs))
+
+

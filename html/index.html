@@ -63,7 +63,7 @@
     <div id="prediction-result" align="center">
         <h2>Prediction:</h2>
 
-        <p>Prediction: <span id="prediction-value"></span></p>
+        <span id="prediction-list"></span>
         
     </div>
     <div>&nbsp;</div>
@@ -128,8 +128,19 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Display prediction in the frontend
-                document.getElementById("prediction-value").textContent = data.prediction;
+                // Display prediction in the frontend #https://boardgamegeek.com/boardgame/359871/
+                //document.getElementById("prediction-value").textContent = data.prediction;
+                //document.getElementById("prediction-value").textContent = data;
+
+                var output = ""
+                data.forEach(function(game) {
+                    // Eine Zeile zur Tabelle hinzufügen
+                //output += "<a href=\"https://boardgamegeek.com/boardgame/359871" + game.id + "/\"">" +  game.name + "</a><br />";
+                
+                output += "<a href=\"https://boardgamegeek.com/boardgame/" + game.id + "\" target=\"_new\">" +  game.name + "</a><br />";
+                });
+                document.getElementById("prediction-list").innerHTML = output;
+
             })
             .catch(error => {
                 console.error("Error fetching prediction: " + error);
